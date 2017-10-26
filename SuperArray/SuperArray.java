@@ -74,7 +74,7 @@ public class SuperArray{
       return data[index];
     }
     else{
-      return "Array index out of bounds";
+      return "no value found at index";
     }
   }
 
@@ -85,13 +85,21 @@ public class SuperArray{
        data[index]=element;
     }
     else{
-      return "Array index out of bounds";
+      resize();
+      set(index,element);
     }
     return old;
   }
   public boolean isEmpty(){
     return size()==0;
   }
+  private void resize(){
+    String[] newdata=new String[size*2];
+    for(int i=0;i<data.length;i+=1){
+      newdata[i]=data[i];
+    }
+    data=newdata;
 
+  }
 
 }
