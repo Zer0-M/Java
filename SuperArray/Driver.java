@@ -15,7 +15,6 @@ public class Driver{
       System.out.println(suparr);//expecting [death,pestilence]
       System.out.println(suparr.size());
       System.out.println(suparr.set(8,"hi"));//null
-      System.out.println(suparr.set(25,"hi"));//null
       System.out.println(suparr);//["hi"]
       System.out.println(suparr.size());
       //since we set a value lets get it

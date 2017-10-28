@@ -50,13 +50,15 @@ public class SuperArray{
 
    */
   public boolean add(String addend){
-    size+=1;
-    String[] newdata=new String[size];
-    for(int i=0;i<data.length;i+=1){
-      newdata[i]=data[i];
-    }
-    newdata[size-1]=addend;
-    data=newdata;
+      if(data[size-1]==null){
+	  data[size-1]=addend
+      }
+      else{
+	  resize();
+	  
+      }
+
+
     return data[size-1]==addend;
   }
   /**
@@ -85,8 +87,7 @@ public class SuperArray{
        data[index]=element;
     }
     else{
-      resize();
-      set(index,element);
+	return "Index out of bounds";
     }
     return old;
   }
