@@ -55,7 +55,6 @@ public class SuperArray{
         }
       }
     data[i]=element;
-    System.out.println(size);
     return data[i].equals(element);
   }
   /**
@@ -154,8 +153,8 @@ public class SuperArray{
   public void add(int index,String element){
     if(index>=0&&index<size()){
       if (size-1==size()){
-        resize();
         System.out.println(size);
+        resize();
       }
       int relativeIndex=0;
       String nextEl=get(index+relativeIndex);

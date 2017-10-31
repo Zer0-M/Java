@@ -1,3 +1,4 @@
+
 public class Driver{
     public static void main(String[] args){
       SuperArray suparr= new SuperArray();
@@ -7,11 +8,11 @@ public class Driver{
       //now find the size
       System.out.println(suparr.size());//0
       //add stuff to array
-      String[] names= {"Bruce Wayne","Korovyov","Mr. Wednesday","Alice Morgan","James Moriarty","Bilbo Baggins", "Eleven","Thorfinn","Jason Bourne"};
+      String[] names= {"Bruce Wayne","Korovyov","Mr. Wednesday","Alice Morgan","James Moriarty"};
       for(int i=0;i<names.length;i+=1){
         suparr.add(names[i]);
         }
-     
+      suparr.add(1,"Mad Max"); 
       System.out.println(suparr);//expecting [death,pestilence]
       System.out.println(suparr.size());
       System.out.println(suparr.set(8,"hi"));//null
@@ -59,7 +60,7 @@ public class Driver{
       System.out.println(arr.indexOf("Waldo"));
       System.out.println(suparr.indexOf("Eleven"));
       System.out.println(suparr.indexOf("-21"));
-      suparr.add(1,"Mad Max");
+    
       arr.add(2,"72");
       System.out.println(suparr);
       System.out.println(arr);
