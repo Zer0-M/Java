@@ -34,13 +34,14 @@ public class SuperArray{
     Returns the number of elements in this list.
    */
   public int size(){
-    int count=0;
-    for(int i=0;i<data.length;i+=1){
-      if(data[i]!=null){
-        count+=1;
-      }
-    }
-    return count;
+      return size;
+      // int count=0;
+    // for(int i=0;i<data.length;i+=1){
+	// if(data[i]!=null){
+	  //    count+=1;
+	//  }
+      // }
+    // return count;
   }
   /**
      Appends the specified element to the end of this list. Returns true.
