@@ -1,19 +1,20 @@
 
 public class Driver{
     public static void main(String[] args){
-      SuperArray suparr= new SuperArray();
+      OrderedSuperArray suparr= new OrderedSuperArray();
       //Phase 1
       //Does it print
       System.out.println(suparr);//expecting []
       //now find the size
       System.out.println(suparr.size());//0
       //add stuff to array
-      String[] names= {"Bruce Wayne","Korovyov","Mr. Wednesday","Alice Morgan","James Moriarty"};
+      String[] names= {"Bruce Wayne","Korovyov","Mr. Wednesday","Alice Morgan","James Moriarty","a","Zer0","1",")","Bad","ki"};
       for(int i=0;i<names.length;i+=1){
         suparr.add(names[i]);
         }
-      suparr.add(1,"Mad Max"); 
-      System.out.println(suparr);//expecting [death,pestilence]
+      System.out.println(suparr);
+      /*suparr.add(1,"Mad Max"); 
+     
       System.out.println(suparr.size());
       System.out.println(suparr.set(8,"hi"));//null
       System.out.println(suparr);//["hi"]
@@ -101,6 +102,7 @@ public class Driver{
       System.out.println(arr.remove("105"));//false
       System.out.println(arr);
       //3,-21,6,5,3,2,1,0,mcDonalds,147,-1029,-21]
+      */
       
     }
 
