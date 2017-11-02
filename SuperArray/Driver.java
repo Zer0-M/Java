@@ -8,7 +8,7 @@ public class Driver{
       //now find the size
       System.out.println(suparr.size());//0
       //add stuff to array
-      String[] names= {"Bruce Wayne","Korovyov","Mr. Wednesday","Alice Morgan","James Moriarty","a","Zer0","1",")","Bad","ki"};
+      String[] names= {"Korovyov","Mr. Wednesday","Alice Morgan","James Moriarty","a","Zer0","1",")","Bad","ki"};
       for(int i=0;i<names.length;i+=1){
         suparr.add(names[i]);
         }

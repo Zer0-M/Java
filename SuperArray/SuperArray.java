@@ -1,4 +1,3 @@
-
 public class SuperArray{
   private String[] data;
   private int size;
@@ -34,14 +33,13 @@ public class SuperArray{
     Returns the number of elements in this list.
    */
   public int size(){
-      return size;
-      // int count=0;
-    // for(int i=0;i<data.length;i+=1){
-	// if(data[i]!=null){
-	  //    count+=1;
-	//  }
-      // }
-    // return count;
+    int count=0;
+    for(int i=0;i<data.length;i+=1){
+      if(data[i]!=null){
+         count+=1;
+       }
+    }
+    return count;
   }
   /**
      Appends the specified element to the end of this list. Returns true.
@@ -70,11 +68,11 @@ public class SuperArray{
      Returns the element at the specified position in this list.
   */
   public String get(int index){
-    if(index>=0&&index<size){
+    if(index>=0&&index<size()){
       return data[index];
     }
     else{
-      throw IndexOutOfBoundsException();
+      throw new IndexOutOfBoundsException();
     }
   }
 
@@ -83,13 +81,14 @@ public class SuperArray{
    */
   public String set(int index, String element){
     String old="";
-    if(index<size&&index>=0){
+
+    if(index<size()&&index>=0){
        old+=data[index];
 
        data[index]=element;
     }
     else{
-      throw IndexOutOfBoundsException();
+      throw new IndexOutOfBoundsException();
     }
     return old;
   }
@@ -153,27 +152,27 @@ public class SuperArray{
      All elements at the index or to the right, are shifted to the right to make space, then insert the specified element at the specified position in this list.
    */
   public void add(int index,String element){
-    if(index>=0&&index<size()){
       if (size-1==size()){
         resize();
-        System.out.println(size);
+
       }
       int relativeIndex=0;
-      String nextEl=get(index+relativeIndex);
-      String nextNextEl=get(index+relativeIndex+1);
-      set(index,element);
+      String nextEl=data[index+relativeIndex];
+      String nextNextEl="";
+      data[index]=element;
+
       while(nextEl!=null){
-        set(index+relativeIndex+1,nextEl);
-        nextEl=nextNextEl;
         relativeIndex+=1;
-        nextNextEl=get(index+relativeIndex+1);
+        nextNextEl=data[index+relativeIndex];
+        data[index+relativeIndex]=nextEl;
+        System.out.println(relativeIndex);
+        nextEl=nextNextEl;
+
+
       }
     }
-    else{
-      throw IndexOutOfBoundsException();;
-    }
 
-  }
+
 
   /**
      Removes the element at the specified position in this list and shifts all subsequent elements to the left. Return the element removed.
@@ -190,7 +189,7 @@ public class SuperArray{
       return removed;
     }
     else{
-      return null;
+      throw new IndexOutOfBoundsException();
     }
   }
 
