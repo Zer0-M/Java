@@ -73,7 +73,7 @@ public class SuperArray{
       return data[index];
     }
     else{
-      return null;
+      throw IndexOutOfBoundsException();
     }
   }
 
@@ -88,7 +88,7 @@ public class SuperArray{
        data[index]=element;
     }
     else{
-      return null;
+      throw IndexOutOfBoundsException();
     }
     return old;
   }
@@ -169,7 +169,7 @@ public class SuperArray{
       }
     }
     else{
-      System.out.println(""+null);
+      throw IndexOutOfBoundsException();;
     }
 
   }
