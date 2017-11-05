@@ -2,28 +2,20 @@ public class SuperArray{
   private String[] data;
   private int size;
   public SuperArray(){
-      size=10;
-      data=new String[size];
+      size=0;
+      data=new String[10];
    }
   /**
      Returns the data in the format: "[A, B, FISH, cat, Dog]" Without double quotes around the data elements.
    */
 
   public String toString(){
-    int nonNulls=0;
     String printable="[";
-    for(int i=0;i<data.length;i+=1){
-
-	    if(data[i]!=null){
-        if(nonNulls>=1){
-          printable+=",";
-        }
-        nonNulls+=1;
+    for(int i=0;i<size;i+=1){
         printable+=data[i];
-
-	    }
-
-
+	if(i!=size()-1){
+	    printable+=","
+	}
     }
     printable+="]";
     return printable;
@@ -33,29 +25,21 @@ public class SuperArray{
     Returns the number of elements in this list.
    */
   public int size(){
-    int count=0;
-    for(int i=0;i<data.length;i+=1){
-      if(data[i]!=null){
-         count+=1;
-       }
-    }
-    return count;
+      return size
   }
   /**
      Appends the specified element to the end of this list. Returns true.
 
    */
   public boolean add(String element){
-    int i=0;
-    while(data[i]!=null){
-        i+=1;
+      for(int i=0;i<size();i+=1){
         if(i==size-1){
           resize();
         }
+	 data[size+i]=element;
       }
-    data[i]=element;
-    System.out.println(size);
-    return data[i].equals(element);
+   
+    return true;
   }
   /**
     Removes all of the elements from this list.
@@ -156,7 +140,8 @@ public class SuperArray{
         resize();
 
       }
-      int relativeIndex=0;
+      
+      /*int relativeIndex=0;
       String nextEl=data[index+relativeIndex];
       String nextNextEl="";
       data[index]=element;
@@ -167,7 +152,7 @@ public class SuperArray{
         data[index+relativeIndex]=nextEl;
         System.out.println(relativeIndex);
         nextEl=nextNextEl;
-
+      */
 
       }
     }
