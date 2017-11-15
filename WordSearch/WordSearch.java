@@ -15,8 +15,10 @@ public class WordSearch{
     /**Initialize the grid to the size specified
 
      *fill all of the positions with '_'
-     *@param row is the starting height of the WordSearch
-     *@param col is the starting width of the WordSearch
+     *fill grid with words from filename and random letters
+     *@param rows is the starting height of the WordSearch
+     *@param cols is the starting width of the WordSearch
+     *@param fileName is the name of a file that contains words formatted in the way specified in the instructions
      */
   public WordSearch( int rows, int cols, String fileName){
     data= new char[rows][cols];
@@ -46,6 +48,15 @@ public class WordSearch{
     fillGrid();
     System.out.println("Seed: "+seed);
   }
+  /**Initialize the grid to the size specified
+
+   *fill all of the positions with '_'
+   *fill grid with words from filename and random letters
+   *@param rows is the starting height of the WordSearch
+   *@param cols is the starting width of the WordSearch
+   *@param fileName is the name of a file that contains words formatted in the way specified in the instructions
+   *@param seed is the seed used to generate the sequence of random digits, which are used postion the words in the grid
+   */
   public WordSearch( int rows, int cols, String fileName, int seed){
     data= new char[rows][cols];
     clear();
@@ -100,16 +111,25 @@ public class WordSearch{
     }
     for(int i=0;i<wordsAdded.size();i++){             //this part gives the user the words that the users need to look for in the word search
       String word=wordsAdded.get(i);
-      if(i%5==0){                                     //the number after the % is the number of words per line
+      if(i%3==0){                                     //the number after the % is the number of words per line
         grid+="\n";
       }
       grid+=word+"  ";
     }
     return grid;
   }
+
+  /**Returns the solution of the word search
+   *@return a string formatted like the word search but with only the answers
+   *in place of the random letters there are underscores
+   */
   private String getSoln(){
     return soln;
   }
+
+  /**Attempt to add all of the words from the wordsToAdd list to the word search
+   *@return true if words are added
+   */
   private boolean addAllWords(){
     int len=wordsToAdd.size();                       //Since the size of wordsToAdd will keep on changing a variable to store the size after each loop
     boolean added=false;                             //indicates whether a certain word has been added to the WordSearch grid
@@ -129,13 +149,16 @@ public class WordSearch{
           wordsAdded.add(word);                       // take the word out from wordsToAdd and place it in wordsAdded
           wordsToAdd.remove(word);
           len=wordsToAdd.size();
-
         }
       }
       added=false;                                    //set back to false because the word is changed
     }
     return true;
   }
+
+  /**Fills in the empty spots in the word search using random letters
+   *@return returns true if the grid is filled
+   */
   private boolean fillGrid(){
     for(int row=0;row<data.length;row++){
       for(int col=0;col<data[row].length;col++){
@@ -147,6 +170,17 @@ public class WordSearch{
     return true;
 
   }
+  /**Given a word in the form of a string it will add that word to the
+   *word search grid starting at the row and col given and the column and
+   *row increments specify if its horizontal,vertical or diagnol.
+   *@param row is the row at which the word starts
+   *@param col is the col at whcih the word starts
+   *@param word is the word that is being added to the grid
+   *@param rowIncrement is the number added to row for every letter in the word
+   *it has to be between -1 and 1 inclusive, if colIncrement is 0 then it can't be 0
+   *@param colIncrement is the number added to row for every letter in the word
+   *it has to be between -1 and 1 inclusive, if rowIncrement is 0 then it can't be 0
+   */
   private boolean addWord( int row, int col, String word, int rowIncrement, int colIncrement){
     try{
       int testRow=row;                                //These variables and the loop below are used to test whether there are any exceptions and  whether the overlapping characters of two words are the same or not
@@ -169,6 +203,7 @@ public class WordSearch{
     }
     return true;
   }
+
   public static void main(String[] args){
     String instructions="To create a WordSearch you require a file containing words and the number of row and columns.\nThe file needs to contain one word per line and it needs to be a text file.\nThe number of row and columns need to be integers above 0.\nThe arguments need to as such java WordSearch r c mydatafile.txt.\nThere are two optional arguments: the seed, which causes the word search to be the same if you run the program again, and the answers,if you want the answers you will type java WordSearch r c mydatafile.txt seed key. ";
     try{
@@ -176,15 +211,15 @@ public class WordSearch{
         System.out.println(instructions);
       }
       else if(Integer.parseInt(args[0])<=0||Integer.parseInt(args[1])<=0){
-         System.out.println(instructions);
+        System.out.println(instructions);
       }
       else if(args.length==3){
         WordSearch search=new WordSearch(Integer.parseInt(args[0]),Integer.parseInt(args[1]),args[2]);
-          System.out.println(search);
+        System.out.println(search);
       }
       else if(args.length==4){
         WordSearch search=new WordSearch(Integer.parseInt(args[0]),Integer.parseInt(args[1]),args[2],Integer.parseInt(args[3]));
-          System.out.println(search);
+        System.out.println(search);
       }
       else if(args.length==5){
         WordSearch search=new WordSearch(Integer.parseInt(args[0]),Integer.parseInt(args[1]),args[2],Integer.parseInt(args[3]));
