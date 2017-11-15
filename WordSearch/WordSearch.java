@@ -1,14 +1,16 @@
 import java.util.Random;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.lang.Math;
 import java.io.File;
 import java.io.FileNotFoundException;
 
 public class WordSearch{
-    private char[][]data;
-    private Random randgen;
-    private ArrayList<String>wordsToAdd;
-    private ArrayList<String>wordsAdded;
+  private char[][]data;
+  private String soln;
+  private Random randgen;
+  private ArrayList<String>wordsToAdd;
+  private ArrayList<String>wordsAdded;
 
     /**Initialize the grid to the size specified
 
@@ -16,110 +18,121 @@ public class WordSearch{
      *@param row is the starting height of the WordSearch
      *@param col is the starting width of the WordSearch
      */
-    public WordSearch(int rows,int cols){
-      data= new char[rows][cols];
-      clear();
-    }
-    public WordSearch( int rows, int cols, String fileName){
-      data= new char[rows][cols];
-      clear();
-      wordsToAdd=new ArrayList<String>();
-      try{
-        File f = new File(fileName);//can combine
-        Scanner in = new Scanner(f);//into one line
+  public WordSearch( int rows, int cols, String fileName){
+    data= new char[rows][cols];
+    clear();                                       //The data field is populated with '_' using this method
+    wordsToAdd=new ArrayList<String>();            //initializes the wordsToAdd ArrayList
+    try{
+      File f = new File(fileName);                 //can combine
+      Scanner in = new Scanner(f);                 //into one line
 
-        while(in.hasNext()){
-          String word = in.next();
-          wordsToAdd.add(word);
+      while(in.hasNext()){
+        String word = in.next();
+        word=word.toUpperCase();
+        wordsToAdd.add(word);                      //Adds all the words seperated by whitespace from the file to the wordsToAdd ArrayList
 
-        }
-
-      }catch(FileNotFoundException e){
-        System.out.println("File not found: " + fileName);
-        //e.printStackTrace();
-        System.exit(1);
       }
-      wordsAdded=new ArrayList<String>();
-      randgen=new Random();
-      addAllWords();
-      fillGrid();
-      System.out.println(wordsAdded);
 
+    }catch(FileNotFoundException e){
+      System.out.println("File not found: " + fileName);
+      //e.printStackTrace();
+      System.exit(1);
     }
+    int seed = (int)(Math.random()*Math.pow(10,(int)(Math.random()*10)));
+    wordsAdded=new ArrayList<String>();
+    randgen=new Random(seed);
+    addAllWords();
+    soln=toString();                               // The addAllWords method doesn't add the random letters to the grid so the string of the WordSearch object here will be the solutions
+    fillGrid();
+    System.out.println("Seed: "+seed);
+  }
   public WordSearch( int rows, int cols, String fileName, int seed){
-      data= new char[rows][cols];
-      clear();
-      wordsToAdd=new ArrayList<String>();
-      try{
-        File f = new File(fileName);//can combine
-        Scanner in = new Scanner(f);//into one line
+    data= new char[rows][cols];
+    clear();
+    wordsToAdd=new ArrayList<String>();
+    try{
+      File f = new File(fileName);                 //can combine
+      Scanner in = new Scanner(f);                 //into one line
 
-        while(in.hasNext()){
-          String word = in.next();
-          wordsToAdd.add(word);
+      while(in.hasNext()){
+        String word = in.next();
+        wordsToAdd.add(word);
 
-        }
-
-      }catch(FileNotFoundException e){
-        System.out.println("File not found: " + fileName);
-        //e.printStackTrace();
-        System.exit(1);
       }
 
-      wordsAdded=new ArrayList<String>();
-      randgen=new Random(seed);
-      addAllWords();
-      fillGrid();
-      System.out.println(wordsAdded);
-
+    }catch(FileNotFoundException e){
+      System.out.println("File not found: " + fileName);
+      //e.printStackTrace();
+      System.exit(1);
     }
 
-  //public WordSearch( int rows, int cols, int fileName, int randSeed)
-
-
+    wordsAdded=new ArrayList<String>();
+    randgen=new Random(seed);                       // if the Random object is generated using a specefic seed the the sequence of random digits can be replicated and thus we can store the word grid
+    addAllWords();
+    soln=toString();
+    fillGrid();
+  }
 
     /**Set all values in the WordSearch to underscores'_'*/
   public void clear(){
-      for(int i=0;i<data.length;i++){
-        for(int col=0;col<data[i].length;col++){
-          try{
-            data[i][col]='_';
-          }catch(ArrayIndexOutOfBoundsException e){}
-        }
+    for(int i=0;i<data.length;i++){                 //loop through each column of each row and set that to a '_'
+      for(int col=0;col<data[i].length;col++){
+        try{
+          data[i][col]='_';
+        }catch(ArrayIndexOutOfBoundsException e){}
       }
     }
+  }
 
     /**The proper formatting for a WordGrid is created in the toString.
      *@return a String with each character separated by spaces, and rows
      *separated by newlines.
      */
-    public String toString(){
-      String grid="";
-      for(int i=0;i<data.length;i++){
-        for(int col=0;col<data[i].length;col++){
-          try{
-            grid+=data[i][col] +" ";
-          }catch(ArrayIndexOutOfBoundsException e){}
-        }
+  public String toString(){
+    String grid="";
+    for(int i=0;i<data.length;i++){
+      for(int col=0;col<data[i].length;col++){
+        try{
+          grid+=data[i][col] +" ";                    // lopping through each column of each row in the data field and adds each of these characters to a String
+        }catch(ArrayIndexOutOfBoundsException e){}
+      }
+      grid+="\n";
+    }
+    for(int i=0;i<wordsAdded.size();i++){             //this part gives the user the words that the users need to look for in the word search
+      String word=wordsAdded.get(i);
+      if(i%5==0){                                     //the number after the % is the number of words per line
         grid+="\n";
       }
-      return grid;
+      grid+=word+"  ";
     }
+    return grid;
+  }
+  private String getSoln(){
+    return soln;
+  }
   private boolean addAllWords(){
-    for(int i=0;i<wordsToAdd.size();i++){
-      String word=wordsToAdd.get(i);
-      int colInc=0;
-      int rowInc=0;
-      while(colInc==0&&rowInc==0){
-        colInc=randgen.nextInt(3)-1;
-        rowInc=randgen.nextInt(3)-1;
+    int len=wordsToAdd.size();                       //Since the size of wordsToAdd will keep on changing a variable to store the size after each loop
+    boolean added=false;                             //indicates whether a certain word has been added to the WordSearch grid
+    for(int count=0;count!=len;count++){             // count indicates the number of words that have been added
+      for(int x=0;x<1000&&!added;x++){               // x indicates the number of attempts the program has tried to made to add a word to the grid
+        String word=wordsToAdd.get(randgen.nextInt(wordsToAdd.size()));         //picking random words makes sure that the words are not added in the same order
+        int colInc=0;
+        int rowInc=0;
+        while(colInc==0&&rowInc==0){                 //both increments cannot be 0 since having both increments being 0 would cause only the first letter to be added to the grid
+          colInc=randgen.nextInt(3)-1;
+          rowInc=randgen.nextInt(3)-1;
+        }
+        int row=randgen.nextInt(data[0].length);
+        int col=randgen.nextInt(data.length);
+        added=addWord(row,col,word,rowInc,colInc);
+        if(added){
+          wordsAdded.add(word);                       // take the word out from wordsToAdd and place it in wordsAdded
+          wordsToAdd.remove(word);
+          len=wordsToAdd.size();
+
+        }
       }
-      int row=randgen.nextInt(data[0].length);
-      int col=randgen.nextInt(data.length);
-      boolean added=addWord(row,col,word,rowInc,colInc);
-      if(added){
-        wordsAdded.add(word);
-      }
+      added=false;                                    //set back to false because the word is changed
     }
     return true;
   }
@@ -127,127 +140,64 @@ public class WordSearch{
     for(int row=0;row<data.length;row++){
       for(int col=0;col<data[row].length;col++){
         if(data[row][col]=='_'){
-          data[row][col]=(char) (randgen.nextInt(26)+65);
+          data[row][col]=(char) (randgen.nextInt(26)+65);       //generates a random integer and typecasts that to a character and these random characters are added to the remaining empty spaces on the grid
         }
       }
     }
     return true;
 
   }
-    private boolean addWord( int row, int col, String word, int rowIncrement, int colIncrement){
-       try{
-             int testRow=row;
-             int testCol=col;
-             for(int ind=0;ind<word.length();ind++){
-               if(data[testRow][testCol]!='_'&&data[testRow][testCol]!=word.charAt(ind)){
-                 return false;
-               }
-               testRow+=rowIncrement;
-               testCol+=colIncrement;
-             }
-           }
-           catch(ArrayIndexOutOfBoundsException e){
-             return false;
-       }
-      for(int i=0;i<word.length();i++){
-           data[row][col]=word.charAt(i);
-           row+=rowIncrement;
-           col+=colIncrement;
-         }
-         return true;
-  }
-
-
-    /**Attempts to add a given word to the specified position of the WordGrid.
-     *The word is added from left to right, must fit on the WordGrid, and must
-     *have a corresponding letter to match any letters that it overlaps.
-     *
-     *@param word is any text to be added to the word grid.
-     *@param row is the vertical locaiton of where you want the word to start.
-     *@param col is the horizontal location of where you want the word to start.
-     *@return true when the word is added successfully. When the word doesn't fit,
-     * or there are overlapping letters that do not match, then false is returned
-
-     * and the board is NOT modified.
-
-     */
-     public boolean addWordHorizontal(String word,int row, int col){
-         for(int i=0;i<word.length();i++){
-           try{
-             for(int ind=0;ind<word.length();ind++){
-               if(data[row][col+ind]!='_'&&data[row][col+ind]!=word.charAt(ind)){
-                 return false;
-               }
-             }
-           }
-           catch(ArrayIndexOutOfBoundsException e){
-             return false;
-           }
-           data[row][col+i]=word.charAt(i);
-         }
-         return true;
-
-
-     }
-
-
-   /**Attempts to add a given word to the specified position of the WordGrid.
-     *The word is added from top to bottom, must fit on the WordGrid, and must
-     *have a corresponding letter to match any letters that it overlaps.
-     *
-     *@param word is any text to be added to the word grid.
-     *@param row is the vertical locaiton of where you want the word to start.
-     *@param col is the horizontal location of where you want the word to start.
-     *@return true when the word is added successfully. When the word doesn't fit,
-     *or there are overlapping letters that do not match, then false is returned.
-     *and the board is NOT modified.
-
-     */
-     public boolean addWordVertical(String word,int row, int col){
-         for(int i=0;i<word.length();i++){
-           try{
-             for(int ind=0;ind<word.length();ind++){
-               if(data[row+ind][col]!='_'&&data[row+ind][col]!=word.charAt(ind)){
-                 return false;
-               }
-             }
-           }
-           catch(ArrayIndexOutOfBoundsException e){
-             return false;
-           }
-           data[row+i][col]=word.charAt(i);
-         }
-         return true;
-
-
-     }
-     /**Attempts to add a given word to the specified position of the WordGrid.
-     *The word is added from top left to bottom right, must fit on the WordGrid,
-     *and must have a corresponding letter to match any letters that it overlaps.
-     *
-     *@param word is any text to be added to the word grid.
-     *@param row is the vertical locaiton of where you want the word to start.
-     *@param col is the horizontal location of where you want the word to start.
-     *@return true when the word is added successfully. When the word doesn't fit,
-     *or there are overlapping letters that do not match, then false is returned.
-     */
-    public boolean addWordDiagonal(String word,int row, int col){
-      for(int i=0;i<word.length();i++){
-        try{
-           for(int ind=0;ind<word.length();ind++){
-             if(data[row+ind][col+ind]!='_'&&data[row+ind][col+ind]!=word.charAt(ind)){
-               return false;
-             }
-           }
-        }
-        catch(ArrayIndexOutOfBoundsException e){
+  private boolean addWord( int row, int col, String word, int rowIncrement, int colIncrement){
+    try{
+      int testRow=row;                                //These variables and the loop below are used to test whether there are any exceptions and  whether the overlapping characters of two words are the same or not
+      int testCol=col;
+      for(int ind=0;ind<word.length();ind++){
+        if(data[testRow][testCol]!='_'&&data[testRow][testCol]!=word.charAt(ind)){
           return false;
         }
-           data[row+i][col+i]=word.charAt(i);
-       }
-         return true;
+        testRow+=rowIncrement;
+        testCol+=colIncrement;
+      }
     }
-
-
-
+    catch(ArrayIndexOutOfBoundsException e){
+      return false;
+    }
+    for(int i=0;i<word.length();i++){
+      data[row][col]=word.charAt(i);                    // this part just adds the word to the grid in the specified location
+      row+=rowIncrement;
+      col+=colIncrement;
+    }
+    return true;
+  }
+  public static void main(String[] args){
+    String instructions="To create a WordSearch you require a file containing words and the number of row and columns.\nThe file needs to contain one word per line and it needs to be a text file.\nThe number of row and columns need to be integers above 0.\nThe arguments need to as such java WordSearch r c mydatafile.txt.\nThere are two optional arguments: the seed, which causes the word search to be the same if you run the program again, and the answers,if you want the answers you will type java WordSearch r c mydatafile.txt seed key. ";
+    try{
+      if(args.length<3){
+        System.out.println(instructions);
+      }
+      else if(Integer.parseInt(args[0])<=0||Integer.parseInt(args[1])<=0){
+         System.out.println(instructions);
+      }
+      else if(args.length==3){
+        WordSearch search=new WordSearch(Integer.parseInt(args[0]),Integer.parseInt(args[1]),args[2]);
+          System.out.println(search);
+      }
+      else if(args.length==4){
+        WordSearch search=new WordSearch(Integer.parseInt(args[0]),Integer.parseInt(args[1]),args[2],Integer.parseInt(args[3]));
+          System.out.println(search);
+      }
+      else if(args.length==5){
+        WordSearch search=new WordSearch(Integer.parseInt(args[0]),Integer.parseInt(args[1]),args[2],Integer.parseInt(args[3]));
+        System.out.println(search);
+        if(args[4].equals("key")){
+          System.out.println(search.getSoln());
+        }
+      }
+      else{
+        System.out.println(instructions);
+      }
+    }catch(NumberFormatException e){
+      System.out.println(instructions);
+    }
+  }
 }
