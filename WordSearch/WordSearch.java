@@ -9,6 +9,7 @@ public class WordSearch{
   private char[][]data;
   private String soln;
   private Random randgen;
+  private int seed;
   private ArrayList<String>wordsToAdd;
   private ArrayList<String>wordsAdded;
 
@@ -40,13 +41,13 @@ public class WordSearch{
       //e.printStackTrace();
       System.exit(1);
     }
-    int seed = (int)(Math.random()*Math.pow(10,(int)(Math.random()*10)));
+    seed = (int)(Math.random()*Math.pow(10,(int)(Math.random()*10)));
     wordsAdded=new ArrayList<String>();
     randgen=new Random(seed);
     addAllWords();
     soln=toString();                               // The addAllWords method doesn't add the random letters to the grid so the string of the WordSearch object here will be the solutions
     fillGrid();
-    System.out.println("Seed: "+seed);
+
   }
   /**Initialize the grid to the size specified
 
@@ -76,7 +77,7 @@ public class WordSearch{
       //e.printStackTrace();
       System.exit(1);
     }
-
+    this.seed=seed;
     wordsAdded=new ArrayList<String>();
     randgen=new Random(seed);                       // if the Random object is generated using a specefic seed the the sequence of random digits can be replicated and thus we can store the word grid
     addAllWords();
@@ -123,8 +124,29 @@ public class WordSearch{
    *@return a string formatted like the word search but with only the answers
    *in place of the random letters there are underscores
    */
-  private String getSoln(){
+  public String getSoln(){
     return soln;
+  }
+
+  /**Returns the word search puzzle
+   *@return a properly formatted string of the word search grid
+   */
+  public String getPuzzle(){
+    return toString();
+  }
+
+  /**Returns words added to the word search
+   *@return an array of the words added
+   */
+  public String getWordsAded(){
+    return wordsAdded.toString();
+  }
+
+  /**Returns the seed used to create the randgen
+   *@return an int
+   */
+  public int getSeed(){
+    return seed;
   }
 
   /**Attempt to add all of the words from the wordsToAdd list to the word search
@@ -134,7 +156,7 @@ public class WordSearch{
     int len=wordsToAdd.size();                       //Since the size of wordsToAdd will keep on changing a variable to store the size after each loop
     boolean added=false;                             //indicates whether a certain word has been added to the WordSearch grid
     for(int count=0;count!=len;count++){             // count indicates the number of words that have been added
-      for(int x=0;x<1000&&!added;x++){               // x indicates the number of attempts the program has tried to made to add a word to the grid
+      for(int x=0;x<500&&!added;x++){               // x indicates the number of attempts the program has tried to made to add a word to the grid
         String word=wordsToAdd.get(randgen.nextInt(wordsToAdd.size()));         //picking random words makes sure that the words are not added in the same order
         int colInc=0;
         int rowInc=0;
@@ -205,33 +227,34 @@ public class WordSearch{
   }
 
   public static void main(String[] args){
-    String instructions="To create a WordSearch you require a file containing words and the number of row and columns.\nThe file needs to contain one word per line and it needs to be a text file.\nThe number of row and columns need to be integers above 0.\nThe arguments need to as such java WordSearch r c mydatafile.txt.\nThere are two optional arguments: the seed, which causes the word search to be the same if you run the program again, and the answers,if you want the answers you will type java WordSearch r c mydatafile.txt seed key. ";
+    String instructions="To create a WordSearch you require a file containing words and the number of row and columns.\nThe file needs to contain one word per line and it needs to be a text file.\nThe number of row and columns need to be integers above 0.\nThe arguments need to as such java WordSearch r c mydatafile.txt.\nThere are two optional arguments: the seed, which causes the word search to be the same if you run the program again, and the answers;if you want the answers you will need to provide a seed and the string key as the 5th argument ";
     try{
       if(args.length<3){
-        System.out.println(instructions);
+        System.out.println(instructions); // there needs to be at least three arguments
       }
       else if(Integer.parseInt(args[0])<=0||Integer.parseInt(args[1])<=0){
-        System.out.println(instructions);
+        System.out.println(instructions);// The rows or columns cannot be negative or zero
       }
       else if(args.length==3){
-        WordSearch search=new WordSearch(Integer.parseInt(args[0]),Integer.parseInt(args[1]),args[2]);
+        WordSearch search=new WordSearch(Integer.parseInt(args[0]),Integer.parseInt(args[1]),args[2]);//A WordSearch is created with the given arguments and a random seed
         System.out.println(search);
+        System.out.println("Seed: "+search.getSeed());//the random seed is printed when no seed is given
       }
       else if(args.length==4){
-        WordSearch search=new WordSearch(Integer.parseInt(args[0]),Integer.parseInt(args[1]),args[2],Integer.parseInt(args[3]));
+        WordSearch search=new WordSearch(Integer.parseInt(args[0]),Integer.parseInt(args[1]),args[2],Integer.parseInt(args[3]));//A WordSearch is created with the given arguments
         System.out.println(search);
       }
       else if(args.length==5){
         WordSearch search=new WordSearch(Integer.parseInt(args[0]),Integer.parseInt(args[1]),args[2],Integer.parseInt(args[3]));
         System.out.println(search);
         if(args[4].equals("key")){
-          System.out.println(search.getSoln());
+          System.out.println(search.getSoln());//The answer key will be printed if the 5th argument is the string key
         }
       }
       else{
         System.out.println(instructions);
       }
-    }catch(NumberFormatException e){
+    }catch(NumberFormatException e){//This catch stament makes sure that the arguments are of the correct type
       System.out.println(instructions);
     }
   }
