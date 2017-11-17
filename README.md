@@ -1,2 +1,2 @@
 # Java
-This repository will contain a few Java programs
+This repository will contain a Java programs
